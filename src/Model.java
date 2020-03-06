@@ -86,8 +86,8 @@ public class Model {
     private int stage = 1;
     private int numSupport = 0;
     private boolean pass = false;
-    private int health1 = 10000;
-    private int health2 = 10000;
+    private int health1 = 10;
+    private int health2 = 10;
 
     private int enemyHealth = 2;
     private int Player1Shield = 0;
