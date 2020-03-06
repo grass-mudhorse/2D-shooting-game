@@ -1,5 +1,6 @@
 package util;
 /*
+
  * Modified by Abraham Campbell on 15/01/2020.
  *   Copyright (c) 2020  Abraham Campbell
 
@@ -22,163 +23,174 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
    
    (MIT LICENSE ) e.g do what you want with this :-) 
- */ 
+ */
 //Modified from Graphics 3033J course point class  by Abey Campbell 
 
 
 public class Point3f {
 
-	private float x;
-	private float y;
-	private float z;
-	
-	private int boundary=1000;
-	
-	
-	// default constructor
-	public Point3f() { 
-		setX(0.0f);
-		setY(0.0f);
-		setZ(0.0f);
-	}
-	
-	//initializing constructor
-	public Point3f(float x, float y, float z) { 
-		this.setX(x);
-		this.setY(y);
-		this.setZ(z); 
-	}
-	
-	private void setBoundary(int boundary) {
-		this.boundary = boundary;
-		
-	}
+    private float x;
+    private float y;
+    private float z;
 
-	// sometimes for different algorithms we will need to address the point using positions 0 1 2 
-	public float getPostion(int postion)
-	{
-		switch(postion)
-		{
-		case 0: return getX();
-		case 1: return getY();
-		case 2: return getZ(); 
-		default: return Float.NaN;  
-		} 
-	}
-	
-	public String toString()
-	{
-		return ("(" + getX() +"," + getY() +"," + getZ() +")");
+    private int boundary = 1000;
+
+
+    // default constructor
+    public Point3f() {
+        setX(0.0f);
+        setY(0.0f);
+        setZ(0.0f);
+    }
+
+    //initializing constructor
+    public Point3f(float x, float y, float z) {
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+    }
+
+    private void setBoundary(int boundary) {
+        this.boundary = boundary;
+
+    }
+
+    // sometimes for different algorithms we will need to address the point using positions 0 1 2
+    public float getPostion(int postion) {
+        switch (postion) {
+            case 0:
+                return getX();
+            case 1:
+                return getY();
+            case 2:
+                return getZ();
+            default:
+                return Float.NaN;
+        }
+    }
+
+    public String toString() {
+        return ("(" + getX() + "," + getY() + "," + getZ() + ")");
     }
 
 
+    //implement Point plus a Vector and comment what the method does
+    public Point3f PlusVector(Vector3f Additonal) {
+        return new Point3f(this.getX() + Additonal.getX(), this.getY() + Additonal.getY(), this.getZ() + Additonal.getZ());
+    }
 
-	 //implement Point plus a Vector and comment what the method does 
-	public Point3f PlusVector(Vector3f Additonal) { 
-		return new Point3f(this.getX()+Additonal.getX(), this.getY()+Additonal.getY(), this.getZ()+Additonal.getZ());
-	} 
-	
-	 //implement Point minus a Vector and comment what the method does 
-	public Point3f MinusVector(Vector3f Minus) { 
-		return new Point3f(this.getX()-Minus.getX(), this.getY()-Minus.getY(), this.getZ()-Minus.getZ());
-	}
-	
-	
-	/// implement Point - Point  and comment what the method does  
-	public Vector3f MinusPoint(Point3f Minus) { 
-		return new Vector3f(this.getX()-Minus.getX(), this.getY()-Minus.getY(), this.getZ()-Minus.getZ());
-	}
-	 
-	
-	
-	 //Use for direct application of a Vector 
-	public void ApplyVector(Vector3f vector) { 
-		 setX(CheckBoundary(this.getX()+vector.getX()));
-		 setY(CheckBoundary(this.getY()-vector.getY()));
-		 setZ(CheckBoundary(this.getZ()-vector.getZ())); 
-	}
-
-	private float CheckBoundary(float f) {
-		if (f<0) f=0.0f;
-		if (f>boundary)f=(float) boundary;
-		return f;
-	}
-
-	public void ApplysubVector(Vector3f vector) {
-		setX(CheckXBoundary(this.getX()+vector.getX()));
-		setY(CheckYBoundary(this.getY()-vector.getY()));
-		setZ(CheckBoundary(this.getZ()-vector.getZ()));
-	}
-
-	public void ApplysubVector2(Vector3f vector) {
-		setX(CheckXBoundary(this.getX()+vector.getX()));
-		setZ(CheckBoundary(this.getZ()-vector.getZ()));
-	}
-
-	private float CheckXBoundary(float f) {
-		float X_boundary = 950.0f;
-		if (f<0) f=0.0f;
-		if (f>X_boundary)f= X_boundary;
-
-		return f;
-	}
-	private float CheckYBoundary(float f) {
-		float Y_boundary = 760.0f;
-		if (f<150) f=150.0f;
-		if (f>Y_boundary)f= Y_boundary;
-		return f;
-	}
+    //implement Point minus a Vector and comment what the method does
+    public Point3f MinusVector(Vector3f Minus) {
+        return new Point3f(this.getX() - Minus.getX(), this.getY() - Minus.getY(), this.getZ() - Minus.getZ());
+    }
 
 
+    /// implement Point - Point  and comment what the method does
+    public Vector3f MinusPoint(Point3f Minus) {
+        return new Vector3f(this.getX() - Minus.getX(), this.getY() - Minus.getY(), this.getZ() - Minus.getZ());
+    }
 
-	/**
-	 *
-	 *	private float CheckYYBoundary(float f) {
-	 * 		float Y_boundary = 760.0f;
-	 * 		if (f<150) f=150.0f;
-	 * 		if (f>Y_boundary)
-	 * 			f -= (this.getY() + (float) (Math.sin(0.0001*(this.getX()))));
-	 * 		return f;
-	 *        }
-	 *
-	 */
 
-/**
-	public void ApplyEnemyVector(Vector3f vector) {
-		float X = this.getX()+vector.getX();
-		setX(CheckXBoundary(X));
-		setY(CheckYBoundary(this.getY() + (float) (Math.sin(0.001*X))));
-		setZ(CheckBoundary(this.getZ()-vector.getZ()));
-	}
- */
-	public float getX() {
-		return x;
-	}
+    //Use for direct application of a Vector
+    public void ApplyVector(Vector3f vector) {
+        setX(CheckBoundary(this.getX() + vector.getX()));
+        setY(CheckBoundary(this.getY() - vector.getY()));
+        setZ(CheckBoundary(this.getZ() - vector.getZ()));
+    }
 
-	public void setX(float x) {
-		this.x = x;
-	}
+    private float CheckBoundary(float f) {
+        if (f < 0) f = 0.0f;
+        if (f > boundary) f = (float) boundary;
+        return f;
+    }
 
-	public float getY() {
-		return y;
-	}
+    public void ApplysubVector(Vector3f vector) {
+        setX(CheckXBoundary(this.getX() + vector.getX()));
+        setY(CheckYBoundary(this.getY() - vector.getY()));
+        setZ(CheckBoundary(this.getZ() - vector.getZ()));
+    }
 
-	public void setY(float y) {
-		this.y = y;
-	}
+    public void ApplyupgradeVector(Vector3f vector) {
+        setX(CheckXBoundary(this.getX() + vector.getX()));
+        setY(CheckupYBoundary(this.getY() - vector.getY()));
+        setZ(CheckBoundary(this.getZ() - vector.getZ()));
+    }
 
-	public float getZ() {
-		return z;
-	}
+    private float CheckupYBoundary(float f) {
+        float Y_boundary = 760.0f;
+        if (f <= 140) f = 140f;
+        if (f >= Y_boundary) f = Y_boundary;
 
-	public void setZ(float z) {
-		this.z = z;
-	}
-	
-	
-	  
-	  
-	 // Remember point + point  is not defined so we not write a method for it.  
+        return f;
+    }
+
+    public void ApplysubVector2(Vector3f vector) {
+        setX(CheckXBoundary(this.getX() + vector.getX()));
+        setZ(CheckBoundary(this.getZ() - vector.getZ()));
+    }
+
+    private float CheckXBoundary(float f) {
+        float X_boundary = 950.0f;
+        if (f <= 0) f = 0.0f;
+        if (f >= X_boundary) f = X_boundary;
+
+        return f;
+    }
+
+    private float CheckYBoundary(float f) {
+        float Y_boundary = 760.0f;
+        if (f < 150) f = 150.0f;
+        if (f > Y_boundary) f = Y_boundary;
+        return f;
+    }
+
+
+    /**
+     *
+     *	private float CheckYYBoundary(float f) {
+     * 		float Y_boundary = 760.0f;
+     * 		if (f<150) f=150.0f;
+     * 		if (f>Y_boundary)
+     * 			f -= (this.getY() + (float) (Math.sin(0.0001*(this.getX()))));
+     * 		return f;
+     *        }
+     *
+     */
+
+    /**
+     * public void ApplyEnemyVector(Vector3f vector) {
+     * float X = this.getX()+vector.getX();
+     * setX(CheckXBoundary(X));
+     * setY(CheckYBoundary(this.getY() + (float) (Math.sin(0.001*X))));
+     * setZ(CheckBoundary(this.getZ()-vector.getZ()));
+     * }
+     */
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public float getZ() {
+        return z;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
+    }
+
+
+    // Remember point + point  is not defined so we not write a method for it.
 }
 
 /*................................................................................

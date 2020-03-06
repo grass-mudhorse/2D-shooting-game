@@ -1,24 +1,20 @@
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Image;
+import util.UnitTests;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
-
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicGraphicsUtils;
-
-import util.UnitTests;
+import java.io.File;
+import java.io.IOException;
 
 
 
 /*
+ * 
+
  * Created by Abraham Campbell on 15/01/2020.
  *   Copyright (c) 2020  Abraham Campbell
 
@@ -41,254 +37,311 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
    
    (MIT LICENSE ) e.g do what you want with this :-) 
- */ 
-
+ */
 
 
 public class MainWindow {
-	 private static  JFrame frame = new JFrame("My First Game");   // Change to the name of your game
-	 private static   Model gameworld = new Model();
-	 private static   Viewer canvas = new  Viewer( gameworld);
-	 private KeyListener Controller =new Controller(); 
-	 private static   int TargetFPS = 300;
-	 public static boolean startGame= false;
-	 public static JLabel BackgroundImageForStartMenu;
-	private JMenuBar bar = new JMenuBar();
-	 private JMenu menu1 = new JMenu("Menu");
-	private JMenuItem item1;
-	private JMenuItem item2;
-	private JMenuItem item3;
-	public static Thread1 t = new Thread1();
-	JTextArea infor = new JTextArea();
-
-	public static int flag = 2;
-
-
-
-	public MainWindow() {
-	        frame.setSize(1000, 1000);  // you can customise this later and adapt it to change on size.  
-	      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
-	        frame.setLayout(null);
-	        frame.add(canvas);  
-	        canvas.setBounds(0, 0, 1000, 1000); 
-			   canvas.setBackground(new Color(255,255,255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen 
-		      canvas.setVisible(false);   // this will become visible after you press the key. 
+    public static int diff;
+    public static boolean startGame = false;
+    public static JLabel BackgroundImageForStartMenu;
+    public static Thread1 t = new Thread1();
+    public static int flag = 2;
+    private static JFrame frame = new JFrame("My First Game");   // Change to the name of your game
+    private static Model gameworld = new Model();
+    private static Viewer canvas = new Viewer(gameworld);
+    private static int TargetFPS = 300;
+    JTextArea infor = new JTextArea();
+    private KeyListener Controller = new Controller();
+    private JMenuBar bar = new JMenuBar();
+    private JMenu menu1 = new JMenu("Menu");
+    private JMenuItem item1;
+    private JMenuItem item2;
+    private JMenuItem item3;
 
 
-		this.t.start();
-
-		this.item1 = new JMenuItem("Stop");
-		this.item2 = new JMenuItem("Resume");
-		this.item3 = new JMenuItem("Exit");
-		this.menu1.add(item1);
-		this.menu1.add(item2);
-		this.menu1.add(item3);
-		this.bar.add(menu1);
-		frame.setJMenuBar(this.bar);
-
-		item1.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P,
-				java.awt.Event.CTRL_MASK));
-		item2.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R,
-				java.awt.Event.CTRL_MASK));
-		item3.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E,
-				java.awt.Event.CTRL_MASK));
-
-		item1.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				t.setSleep(true);
-			}});
-
-		item2.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				t.setSleep(false);
-			}});
-
-		item3.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				t.setStop(true);
-				frame.dispose();
-				System.out.println("hello");
-			}});
-
-	        JButton startMenuButton1 = new JButton("One Player driving submarine");  // start button
-	        startMenuButton1.addActionListener(new ActionListener()
-	           {
-				   @Override
-				public void actionPerformed(ActionEvent e) { 
-					startMenuButton1.setVisible(false);
-					BackgroundImageForStartMenu.setVisible(false); 
-					canvas.setVisible(true); 
-					canvas.addKeyListener(Controller);    //adding the controller to the Canvas  
-	            	canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-					startGame=true;
-					flag = 0;
-				}});  
-	        startMenuButton1.setBounds(400, 500, 200, 40);
-
-		JButton startMenuButton2 = new JButton("One Player driving naval ship");  // start button
-		startMenuButton2.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startMenuButton2.setVisible(false);
-				BackgroundImageForStartMenu.setVisible(false);
-				canvas.setVisible(true);
-				canvas.addKeyListener(Controller);    //adding the controller to the Canvas
-				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-				startGame=true;
-				flag = 1;
-			}});
-		startMenuButton2.setBounds(400, 550, 200, 40);
-
-		JButton startMenuButton3 = new JButton("two Players");  // start button
-		startMenuButton3.addActionListener(new ActionListener()
-		{
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startMenuButton3.setVisible(false);
-				BackgroundImageForStartMenu.setVisible(false);
-				canvas.setVisible(true);
-				canvas.addKeyListener(Controller);    //adding the controller to the Canvas
-				canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
-				startGame=true;
-				flag = 2;
-
-			}});
-		startMenuButton3.setBounds(400, 600, 200, 40);
-
-		frame.add(startMenuButton1);
-		frame.add(startMenuButton3);
-		frame.add(startMenuButton2);
-		//loading background image
-	        //File BackroundToLoad = new File("res/back.gif");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
-			try {
-
-				// BufferedImage myPicture = ImageIO.read(BackroundToLoad);
-				 Icon myIcon = new ImageIcon(new URL("file:///E://SMS2//Game Development//PS test//back.gif"));
-				 BackgroundImageForStartMenu = new JLabel(myIcon);
-				 //BackgroundImageForStartMenu.add(infor);
-				 BackgroundImageForStartMenu.setBounds(0, 0, 1000, 1000);
-				frame.add(BackgroundImageForStartMenu); 
-			}  catch (IOException e) { 
-				e.printStackTrace();
-			}   
-			 
-
-	       frame.setVisible(true);   
-	}
-
-	public static void main(String[] args) {
-		MainWindow hello = new MainWindow();  //sets up environment
-
-	} 
-	//Basic Model-View-Controller pattern 
-	private static void gameloop() throws InterruptedException {
-		// GAMELOOP  
-		
-		// controller input  will happen on its own thread 
-		// So no need to call it explicitly
-		// model update   
-		gameworld.gamelogic();
-		// view update 
-		
-		  canvas.updateview(); 
-		
-		// Both these calls could be setup as  a thread but we want to simplify the game logic for you.  
-		//score update  
-		 //frame.setTitle("Score =  "+ gameworld.getScore());
-		
-		 
-	}
-
-	/**
-	 *
-	 * @param filePath
-	 * @param jb
-	 * @throws IOException
-	 */
-	/***
-	public static void showText(String filePath, JTextArea jb) throws IOException {
-		FileInputStream fin;
-		try {
-			fin = new FileInputStream(filePath);
-			InputStreamReader reader = new InputStreamReader(fin);
-			BufferedReader buffReader = new BufferedReader(reader);
-			String strTmp = "";
-
-			while ((strTmp = buffReader.readLine()) != null) {
-				jb.append(strTmp.toString() + "\n");
-				try {
-					TimeUnit.MILLISECONDS.sleep((long) 800);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-			buffReader.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-*/
-static class Thread1 extends Thread {
-		private boolean isSleep = false;
-		private boolean isStop = false;
-
-		public void run() {
-			while (!isStop) {
-				if (isSleep) {
-					try {
-						Thread.sleep(1);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				} else {
-						//swing has timer class to help us time this but I'm writing my own, you can of course use the timer, but I want to set FPS and display it
-
-						int TimeBetweenFrames =  1000 / TargetFPS;
-						long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames;
-
-						//wait till next time step
-						while (FrameCheck > System.currentTimeMillis()){}
+    public MainWindow() {
+        frame.setSize(1000, 1000);  // you can customise this later and adapt it to change on size.
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);   //If exit // you can modify with your way of quitting , just is a template.
+        frame.setLayout(null);
+        frame.add(canvas);
+        canvas.setBounds(0, 0, 1000, 1000);
+        canvas.setBackground(new Color(255, 255, 255)); //white background  replaced by Space background but if you remove the background method this will draw a white screen
+        canvas.setVisible(false);   // this will become visible after you press the key.
 
 
-						if(startGame)
-						{
-							try {
-								gameloop();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
+        t.start();
 
-						//UNIT test to see if framerate matches
-						UnitTests.CheckFrameRate(System.currentTimeMillis(),FrameCheck, TargetFPS);
+        this.item1 = new JMenuItem("Stop");
+        this.item2 = new JMenuItem("Resume");
+        this.item3 = new JMenuItem("Exit");
+        this.menu1.add(item1);
+        this.menu1.add(item2);
+        this.menu1.add(item3);
+        this.bar.add(menu1);
+        frame.setJMenuBar(this.bar);
+
+        item1.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P,
+                java.awt.Event.CTRL_MASK));
+        item2.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R,
+                java.awt.Event.CTRL_MASK));
+        item3.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E,
+                java.awt.Event.CTRL_MASK));
+
+        item1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                t.setSleep(true);
+            }
+        });
+
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                t.setSleep(false);
+            }
+        });
+
+        item3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	t.setSleep(true);
+                int n = JOptionPane.showConfirmDialog(null, "Are you sure to exit the game?", "Exit game", JOptionPane.YES_NO_OPTION);
+                if (n == 0) {
+                    t.setStop(true);
+                    frame.dispose();
+                }else {
+                	t.setSleep(false);
+                }
+            }
+        });
+
+        JButton startMenuButton1 = new JButton("One Player driving submarine(Easy)");  // start button
+        startMenuButton1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startMenuButton1.setVisible(false);
+                BackgroundImageForStartMenu.setVisible(false);
+                canvas.setVisible(true);
+                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+                startGame = true;
+                flag = 0;
+                diff = 1;
+            }
+        });
+        startMenuButton1.setBounds(200, 500, 250, 40);
+
+        JButton startMenuButton2 = new JButton("One Player driving naval ship(Easy)");  // start button
+        startMenuButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startMenuButton2.setVisible(false);
+                BackgroundImageForStartMenu.setVisible(false);
+                canvas.setVisible(true);
+                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+                startGame = true;
+                flag = 1;
+                diff = 1;
+            }
+        });
+        startMenuButton2.setBounds(200, 550, 250, 40);
+
+        JButton startMenuButton3 = new JButton("two Players(Easy)");  // start button
+        startMenuButton3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startMenuButton3.setVisible(false);
+                BackgroundImageForStartMenu.setVisible(false);
+                canvas.setVisible(true);
+                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+                startGame = true;
+                flag = 2;
+                diff = 1;
+            }
+        });
+        startMenuButton3.setBounds(200, 600, 250, 40);
+
+        JButton startMenuButton4 = new JButton("One Player driving submarine(Tricky)");  // start button
+        startMenuButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startMenuButton4.setVisible(false);
+                BackgroundImageForStartMenu.setVisible(false);
+                canvas.setVisible(true);
+                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+                startGame = true;
+                flag = 0;
+                diff = 2;
+            }
+        });
+        startMenuButton4.setBounds(500, 500, 250, 40);
+
+        JButton startMenuButton5 = new JButton("One Player driving naval ship(Tricky)");  // start button
+        startMenuButton5.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startMenuButton5.setVisible(false);
+                BackgroundImageForStartMenu.setVisible(false);
+                canvas.setVisible(true);
+                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+                startGame = true;
+                flag = 1;
+                diff = 2;
+            }
+        });
+        startMenuButton5.setBounds(500, 550, 250, 40);
+
+        JButton startMenuButton6 = new JButton("Two Player(Tricky)");  // start button
+        startMenuButton6.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                startMenuButton6.setVisible(false);
+                BackgroundImageForStartMenu.setVisible(false);
+                canvas.setVisible(true);
+                canvas.addKeyListener(Controller);    //adding the controller to the Canvas
+                canvas.requestFocusInWindow();   // making sure that the Canvas is in focus so keyboard input will be taking in .
+                startGame = true;
+                flag = 2;
+                diff = 2;
+            }
+        });
+        startMenuButton6.setBounds(500, 600, 250, 40);
+
+        frame.add(startMenuButton1);
+        frame.add(startMenuButton3);
+        frame.add(startMenuButton2);
+        frame.add(startMenuButton4);
+        frame.add(startMenuButton5);
+        frame.add(startMenuButton6);
+        //loading background image
+        File BackroundToLoad = new File("res/test.png");  //should work okay on OSX and Linux but check if you have issues depending your eclipse install or if your running this without an IDE
+        try {
+
+            BufferedImage myPicture = ImageIO.read(BackroundToLoad);
+            BackgroundImageForStartMenu = new JLabel(new ImageIcon(myPicture));
+            //Icon myIcon = new ImageIcon(new URL("file:///E://SMS2//Game Development//PS test//test.gif"));
+            //BackgroundImageForStartMenu = new JLabel(myIcon);
+            //BackgroundImageForStartMenu.add(infor);
+            BackgroundImageForStartMenu.setBounds(0, 0, 1000, 1000);
+            frame.add(BackgroundImageForStartMenu);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
-				}
-			}
-			System.out.println("Thread: " + Thread.currentThread().getName() + " finished.");
-			Thread.currentThread().interrupt();
-		}
+        frame.setVisible(true);
+    }
 
-		public void setSleep(boolean sleep) {
-			this.isSleep = sleep;
-		}
+    public static void main(String[] args) {
+        MainWindow hello = new MainWindow();  //sets up environment
 
-		public void setStop(boolean stop) {
-			this.isStop = stop;
-		}
-	}
+    }
 
+    //Basic Model-View-Controller pattern
+    private static void gameloop() throws InterruptedException {
+        // GAMELOOP
+
+        // controller input  will happen on its own thread
+        // So no need to call it explicitly
+        // model update
+        gameworld.gamelogic();
+        // view update
+
+        canvas.updateview();
+
+        // Both these calls could be setup as  a thread but we want to simplify the game logic for you.
+        //score update
+        //frame.setTitle("Score =  "+ gameworld.getScore());
+
+
+    }
+
+    /**
+     *
+     * @param filePath
+     * @param jb
+     * @throws IOException
+     */
+    /***
+     public static void showText(String filePath, JTextArea jb) throws IOException {
+     FileInputStream fin;
+     try {
+     fin = new FileInputStream(filePath);
+     InputStreamReader reader = new InputStreamReader(fin);
+     BufferedReader buffReader = new BufferedReader(reader);
+     String strTmp = "";
+
+     while ((strTmp = buffReader.readLine()) != null) {
+     jb.append(strTmp.toString() + "\n");
+     try {
+     TimeUnit.MILLISECONDS.sleep((long) 800);
+     } catch (InterruptedException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+
+     }
+     buffReader.close();
+     } catch (FileNotFoundException e) {
+     // TODO Auto-generated catch block
+     e.printStackTrace();
+     }
+
+     }
+     */
+    static class Thread1 extends Thread {
+        private boolean isSleep = false;
+        private boolean isStop = false;
+
+        public void run() {
+            while (!isStop) {
+                if (isSleep) {
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //swing has timer class to help us time this but I'm writing my own, you can of course use the timer, but I want to set FPS and display it
+
+                    int TimeBetweenFrames = 1000 / TargetFPS;
+                    long FrameCheck = System.currentTimeMillis() + (long) TimeBetweenFrames;
+
+                    //wait till next time step
+                    while (FrameCheck > System.currentTimeMillis()) {
+                    }
+
+
+                    if (startGame) {
+                        try {
+                            gameloop();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    //UNIT test to see if framerate matches
+                    UnitTests.CheckFrameRate(System.currentTimeMillis(), FrameCheck, TargetFPS);
+
+
+                }
+            }
+            System.out.println("Thread: " + Thread.currentThread().getName() + " finished.");
+            Thread.currentThread().interrupt();
+        }
+
+        public void setSleep(boolean sleep) {
+            this.isSleep = sleep;
+        }
+
+        public void setStop(boolean stop) {
+            this.isStop = stop;
+        }
+    }
 
 
 }

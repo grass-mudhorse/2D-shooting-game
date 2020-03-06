@@ -1,5 +1,7 @@
 package util;
+
 /*
+
  * Created by Abraham Campbell on 15/01/2020.
  *   Copyright (c) 2020  Abraham Campbell
 
@@ -22,56 +24,113 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
    
    (MIT LICENSE ) e.g do what you want with this :-) 
- */ 
+ */
 public class GameObject {
-	
-	private Point3f centre= new Point3f(0,0,0);			// Centre of object, using 3D as objects may be scaled  
-	private int width=10;
-	private int height=10;
-	private boolean hasTextured=false;
-	private String textureLocation; 
-	private String blanktexture="res/blankSprite.png";
-	
-	public GameObject() {  
-		
-	}
-	
-    public GameObject(String textureLocation,int width,int height,Point3f centre) { 
-    	 hasTextured=true;
-    	 this.textureLocation=textureLocation;
-    	 this.width=width;
-		 this.height=height;
-		 this.centre =centre;
-	}
 
-	public Point3f getCentre() {
-		return centre;
-	}
+    public Vector3f vector;
+    private Point3f centre = new Point3f(0, 0, 0);            // Centre of object, using 3D as objects may be scaled
+    private int width = 10;
+    private int height = 10;
+    private boolean hasTextured = false;
+    private String textureLocation;
+    private String blanktexture = "res/blankSprite.png";
+	public int health = 1;
 
-	public void setCentre(Point3f centre) {
-		this.centre = centre;
-		
-		//make sure to put boundaries on the gameObject 
-	 
-	}
+    public GameObject() {
 
-	public int getWidth() {
-		return width;
-	}
+    }
 
-	public int getHeight() {
-		return height;
-	}
+    public GameObject(String textureLocation, int width, int height, Point3f centre) {
+        hasTextured = true;
+        this.textureLocation = textureLocation;
+        this.width = width;
+        this.height = height;
+        this.centre = centre;
+    }
 
-	public String getTexture() {
-		if(hasTextured) 
-			{
-			return textureLocation;
-			}
-		 
-		return blanktexture; 
-	}
-  
+    public Point3f getCentre() {
+        return centre;
+    }
+
+    public void setCentre(Point3f centre) {
+        this.centre = centre;
+
+        //make sure to put boundaries on the gameObject
+
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public String getTexture() {
+        if (hasTextured) {
+            return textureLocation;
+        }
+
+        return blanktexture;
+    }
+
+    public Vector3f getVector() {
+        return vector;
+    }
+
+    public void setVector(Vector3f v) {
+        vector = v;
+    }
+
+    public void ApplyrandomMove() {
+        if (getCentre().getX() >= 950f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (270 - 90) + 90) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getX() <= 0f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180) - 90) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getY() <= 150f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180) - 180) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getY() >= 760f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180)) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        }
+    }
+
+    public void ApplyrandomupgradeMove() {
+        if (getCentre().getX() >= 950f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (270 - 90) + 90) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getX() <= 0f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180) - 90) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getY() <= 140f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180) - 180) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getY() >= 760f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180)) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        }
+    }
+
+    public void ApplyrandombossMove() {
+        if (getCentre().getX() >= 950f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (270 - 90) + 90) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getX() <= 600f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180) - 90) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getY() <= 150f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180) - 180) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        } else if (getCentre().getY() >= 760f) {
+            float randomAngel = (float) ((float) Math.PI * (Math.random() * (180)) / 180);
+            vector = new Vector3f((float) ((float) Math.cos(randomAngel) * 0.5), (float) ((float) Math.sin(randomAngel) * 0.5), 0);
+        }
+    }
+
 }
 
 /*
